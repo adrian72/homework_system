@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>作业管理系统</title>
+</head>
+<body>
+    <h1>欢迎使用作业管理系统</h1>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('student.dashboard') }}">学生系统</a></li>
+            <li><a href="{{ url_for('teacher.dashboard') }}">教师系统</a></li>
+            <li><a href="{{ url_for('admin.dashboard') }}">管理员系统</a></li>
+        </ul>
+    </nav>
+</body>
+</html>

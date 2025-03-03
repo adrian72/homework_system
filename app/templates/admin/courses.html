@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}课程管理 - 作业批改系统{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2 class="mb-3">
+                <i class="fas fa-book me-2"></i> 课程管理
+            </h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <a href="{{ url_for('admin_views.dashboard') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-arrow-left me-1"></i> 返回仪表盘
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus-circle me-1"></i> 创建课程
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <form action="{{ url_for('admin_views.courses') }}" method="get" class="d-flex">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search" placeholder="搜索课程名称..." value="{{ search|default('') }}">
+                                    <button class="btn btn-outline-primary" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-end">
+                                <select name="teacher_id" class="form-select" onchange="this.form.submit()">
+                                    <option value="">所有教师</option>
+                                    {% for teacher in teachers %}
+                                    <option value="{{ teacher.id }}" {% if selected_teacher_id == teacher.id %}selected{% endif %}>{{ teacher.username }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">课程名称</th>
+                                    <th scope="col">教师</th>
+                                    <th scope="col">学生数</th>
+                                    <th scope="col">作业数</th>
+                                    <th scope="col">创建时间</th>
+                                    <th scope="col">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for course in courses %}
+                                <tr>
+                                    <td>{{ course.id }}</td>
+                                    <td>
+                                        {% if course.cover_image %}
+                                            <img src="{{ course.cover_image }}" class="rounded me-2" width="40" height="30" style="object-fit: cover;">
+                                        {% else %}
+                                            <div class="bg-light rounded me-2 d-inline-block text-center" style="width: 40px; height: 30px;">
+                                                <i class="fas fa-book text-muted" style="line-height: 30px;"></i>
+                                            </div>
+                                        {% endif %}
+                                        {{ course.name }}
+                                    </td>
+                                    <td>{{ course.teacher.username }}</td>
+                                    <td>{{ course.students.count() }}</td>
+                                    <td>{{ course.homeworks.count() }}</td>
+                                    <td>{{ course.created_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-outline-success">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="7" class="text-center">暂无课程数据</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
