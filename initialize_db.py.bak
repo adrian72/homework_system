@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash
 
 # 创建Flask应用
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance/dev.sqlite')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/oliver/Desktop/homework_system/instance/dev.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'dev-key'
 

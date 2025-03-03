@@ -2,7 +2,7 @@
 # 脚本：fix_imports.sh
 
 # 在所有API文件中修正导入语句
-cd $(dirname "$0")
+cd /Users/oliver/Desktop/homework_system
 
 # 修复auth.py
 sed -i '' 's/from app\.models import db, User/from app import db\nfrom app.models import User/' app/api/auth.py

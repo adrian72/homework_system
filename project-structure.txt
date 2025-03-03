@@ -1,7 +1,6 @@
 homework_system/
 ├── app/
 │   ├── __init__.py
-│   ├── config.py
 │   ├── models/
 │   │   ├── __init__.py
 │   │   ├── user.py
@@ -18,27 +17,31 @@ homework_system/
 │   │   ├── feedback.py
 │   │   ├── users.py
 │   │   └── wordpress.py
-│   ├── static/
-│   │   ├── css/
-│   │   ├── js/
-│   │   └── uploads/
+│   ├── views/
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── student.py
+│   │   ├── teacher.py
+│   │   └── admin.py
 │   ├── templates/
 │   │   ├── base.html
 │   │   ├── auth/
 │   │   ├── student/
 │   │   ├── teacher/
 │   │   └── admin/
+│   ├── static/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── uploads/
 │   └── utils/
 │       ├── __init__.py
 │       ├── auth.py
 │       ├── file_handler.py
+│       ├── error_handlers.py
 │       └── wordpress_client.py
-├── migrations/
-├── tests/
-├── .env.example
-├── .gitignore
-├── requirements.txt
-├── manage.py
 ├── config.py
+├── manage.py
+├── requirements.txt
 ├── Dockerfile
-└── docker-compose.yml
+├── docker-compose.yml
+└── .env.example

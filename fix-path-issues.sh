@@ -1,3 +1,38 @@
+#!/bin/bash
+# 脚本：fix_path_issues.sh
+# 用途：修复代码中的硬编码路径和数据库配置问题
+
+# 确保当前目录是项目根目录
+if [ ! -f "manage.py" ] || [ ! -d "app" ]; then
+    echo "错误：请在项目根目录中运行此脚本"
+    exit 1
+fi
+
+echo "开始修复路径问题..."
+
+# 修复config.py中的数据库路径
+echo "修复config.py中的数据库配置..."
+sed -i.bak 's|sqlite:////Users/oliver/Desktop/homework_system/instance/dev.sqlite|sqlite:///instance/dev.sqlite|g' config.py
+if [ $? -eq 0 ]; then echo "✓ 成功修复config.py"; else echo "× 修复config.py失败"; fi
+
+# 修复create_db.py中的数据库路径
+echo "修复create_db.py中的数据库配置..."
+sed -i.bak 's|app.config\['"'"'SQLALCHEMY_DATABASE_URI'"'"'\] = '"'"'sqlite:///instance/dev.sqlite'"'"'|app.config\['"'"'SQLALCHEMY_DATABASE_URI'"'"'\] = '"'"'sqlite:///'"'"' + os.path.join(os.path.dirname(os.path.abspath(__file__)), '"'"'instance/dev.sqlite'"'"')|g' create_db.py
+if [ $? -eq 0 ]; then echo "✓ 成功修复create_db.py"; else echo "× 修复create_db.py失败"; fi
+
+# 修复initialize_db.py中的数据库路径
+echo "修复initialize_db.py中的数据库配置..."
+sed -i.bak 's|app.config\['"'"'SQLALCHEMY_DATABASE_URI'"'"'\] = '"'"'sqlite:////Users/oliver/Desktop/homework_system/instance/dev.sqlite'"'"'|app.config\['"'"'SQLALCHEMY_DATABASE_URI'"'"'\] = '"'"'sqlite:///'"'"' + os.path.join(os.path.dirname(os.path.abspath(__file__)), '"'"'instance/dev.sqlite'"'"')|g' initialize_db.py
+if [ $? -eq 0 ]; then echo "✓ 成功修复initialize_db.py"; else echo "× 修复initialize_db.py失败"; fi
+
+# 修复fix_imports.sh和fix_view_imports.sh中的绝对路径
+echo "修复导入脚本中的绝对路径..."
+sed -i.bak 's|cd /Users/oliver/Desktop/homework_system|cd $(dirname "$0")|g' fix_imports.sh fix_view_imports.sh
+if [ $? -eq 0 ]; then echo "✓ 成功修复导入脚本"; else echo "× 修复导入脚本失败"; fi
+
+# 修复app/__init__.py中的动态路径处理
+echo "确保app/__init__.py中使用动态路径..."
+cat > app/__init__.py.new << 'EOF'
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -81,3 +116,13 @@ def create_app(config_name='default'):
         }
     
     return app
+EOF
+mv app/__init__.py.new app/__init__.py
+echo "✓ 成功更新app/__init__.py"
+
+# 确保使用相对路径
+echo "创建instance目录（如果不存在）..."
+mkdir -p instance
+
+echo "修复完成！"
+echo "请检查修改并测试系统功能。"

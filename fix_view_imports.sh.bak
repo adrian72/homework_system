@@ -1,7 +1,7 @@
 #!/bin/bash
 # 脚本：fix_view_imports.sh
 
-cd $(dirname "$0")
+cd /Users/oliver/Desktop/homework_system
 
 # 修复auth.py的导入
 sed -i '' 's/from app\.models import User, db/from app import db\nfrom app.models import User/' app/views/auth.py
